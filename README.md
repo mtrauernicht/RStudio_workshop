@@ -1,4 +1,4 @@
-# **Workshop: Introduction to Statistical Analysis and Visualization Using RStudio**  
+# **Workshop: Statistical Analysis and Visualization Using RStudio**  
 
 ## **Overview**  
 This workshop provides a hands-on introduction to **RStudio**, focusing on statistical analysis and data visualization using the **tidyverse** package suite. Participants will learn how to explore data, create compelling visualizations with **ggplot2**, and document their workflow using **RMarkdown**.  
