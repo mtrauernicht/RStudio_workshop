@@ -1,7 +1,3 @@
-Here's a more polished and expanded version of your README to make it clearer and more engaging:  
-
----
-
 # **Workshop: Introduction to Statistical Analysis and Visualization Using RStudio**  
 
 ## **Overview**  
@@ -18,19 +14,18 @@ By the end of this session, you will be able to:
 
 ## **Workshop Agenda**  
 ### **1️⃣ Introduction to RStudio**  
-- Overview of the interface: Console, Script Editor, Environment, Plots, etc.  
-- Writing and running R scripts.  
+- Overview of the interface: Console, Script Editor, Environment, Plots, etc.   
 - Installing and loading packages.  
 
-### **2️⃣ Exploring the tidyverse**  
-- Introduction to `dplyr` for data wrangling.  
-- Common functions: `filter()`, `select()`, `mutate()`, `group_by()`, `summarise()`.  
-- Handling datasets efficiently.  
-
-### **3️⃣ Introduction to RMarkdown (.Rmd)**  
+### **2️⃣ Introduction to RMarkdown (.Rmd)**  
 - Creating an RMarkdown file.  
 - Mixing text, code, and visualizations.  
-- Knitting to HTML/PDF.  
+- Knitting to HTML/PDF. 
+
+### **3️⃣ Exploring the tidyverse**  
+- Introduction to `dplyr` for data wrangling.  
+- Common functions: `filter()`, `select()`, `mutate()`, `group_by()`, `summarise()`.  
+- Handling datasets efficiently.   
 
 ### **4️⃣ Data Visualization with ggplot2**  
 - Understanding the **grammar of graphics**.  
@@ -47,11 +42,10 @@ By the end of this session, you will be able to:
 ## **Getting Started**  
 ### **📥 Prerequisites**  
 Make sure you have the following installed on your system:  
-- **[R](https://cran.r-project.org/)** (latest version)  
 - **[RStudio](https://posit.co/download/rstudio-desktop/)**  
 - The following R packages:  
   ```r
-  install.packages(c("tidyverse", "ggplot2", "rmarkdown"))
+  install.packages(c("tidyverse", "rmarkdown"))
   ```
   
 ### **📂 Dataset & Materials**  
