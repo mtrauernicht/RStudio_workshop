@@ -37,9 +37,5 @@ By the end of this session, you will be able to:
 - Computing summary statistics.  
 - Performing simple hypothesis tests (e.g., `t.test()`). 
 
-## **💡 Contributing & Questions**  
-If you have any questions or suggestions, feel free to open an issue or reach out! 🚀  
-
----
-
-Let me know if you want to add anything specific! 😊
+## **💡 Questions**  
+If you have any questions or suggestions, feel free to reach out! 😊 
