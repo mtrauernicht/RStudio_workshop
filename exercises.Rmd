@@ -1,0 +1,140 @@
+---
+title: "Your Title Here"
+author: 
+  - name: "Your Name Here"
+    email: "Your Email Here"
+    affiliation: "Your University/Institution Here"
+date: '`r format(Sys.time(), "%d/%m/%Y")`'
+output: 
+  html_document:
+    theme: united
+    highlight: pygments
+    fig_caption: yes
+    code_folding: hide
+    df_print: kable
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+---
+
+---
+
+### Workshop introduction
+In this document, we will load interview data and visualize it to gain insights into the data. We will also perform basic statistical tests to generate solid conclusions about the data.
+
+The data can be found on: https://github.com/mtrauernicht/RStudio_workshop
+
+## Data information
+
+
+
+---
+
+## Setup {.tabset}
+
+<!-- little HTML script to do indentation of the table of contents -->
+<script>
+    $(document).ready(function() {
+      $items = $('div#TOC li');
+      $items.each(function(idx) {
+        num_ul = $(this).parentsUntil('#TOC').length;
+        $(this).css({'text-indent': num_ul * 10, 'padding-left': 0});
+      });
+
+    });
+</script>
+
+```{css, echo = FALSE}
+div.sourceCode {
+  overflow-x: hidden;
+}
+```
+
+### Libraries
+```{r setup, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+StartTime <-Sys.time()
+
+# 8-digit Date tag:
+Date <- substr(gsub("-","",Sys.time()),1,8) 
+# libraries:
+library(ggvisuals)
+
+```
+
+### Custom functions
+
+```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+SetFileName <- function(filename, initials) {
+  # Set filename with extension and initials to make filename with date integrated.
+  filename <- substitute(filename)
+  initials <- substitute(initials)
+  filename <- paste0(initials, Date, filename)
+  filename
+}
+
+theme_classic_lines <- function() {
+  theme_pubr(border = T, base_family = "Arial", legend = "top") +
+            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
+                  strip.background = element_rect(fill = "#ced4da")
+            )
+}
+
+theme_classic_lines_45 <- function() {
+  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 45) +
+            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
+                  strip.background = element_rect(fill = "#ced4da")
+            )
+}
+
+theme_classic_lines_90 <- function() {
+  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 90) +
+            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
+                  strip.background = element_rect(fill = "#ced4da")
+            )
+}
+
+theme_set(theme_classic_lines())
+```
+
+
+### Load data
+
+```{r}
+# Here I load this: 
+
+
+
+```
+
+---
+
+## Visualisation
+
+```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+
+
+
+```
+
+---
+
+## Results
+```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+```
+
+
+### Exporting potential data
+```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+```
+
+
+# Session Info
+```{r}
+paste("Run time: ",format(Sys.time()-StartTime))
+getwd()
+date()
+sessionInfo()
+```
+

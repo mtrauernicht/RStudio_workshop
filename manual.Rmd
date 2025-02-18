@@ -1,0 +1,28 @@
+---
+title: "Your Title Here"
+author: 
+  - name: "Your Name Here"
+    email: "Your Email Here"
+    affiliation: "Your University/Institution Here"
+date: '`r format(Sys.time(), "%d/%m/%Y")`'
+output: 
+  html_document:
+    theme: united
+    highlight: pygments
+    fig_caption: yes
+    code_folding: hide
+    df_print: kable
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+---
+
+#RStudio workshop: 
+
+
+
+## Data information
+
+
+
