@@ -35,23 +35,7 @@ By the end of this session, you will be able to:
 ### **5️⃣ Statistical Analysis of Interview Data**  
 - Exploring interview dataset.  
 - Computing summary statistics.  
-- Performing simple hypothesis tests (e.g., `t.test()`).  
-
----
-
-## **Getting Started**  
-### **📥 Prerequisites**  
-Make sure you have the following installed on your system:  
-- **[RStudio](https://posit.co/download/rstudio-desktop/)**  
-- The following R packages:  
-  ```r
-  install.packages(c("tidyverse", "rmarkdown"))
-  ```
-  
-### **📂 Dataset & Materials**  
-You can find the dataset and example scripts in this repository.  
-
----
+- Performing simple hypothesis tests (e.g., `t.test()`). 
 
 ## **💡 Contributing & Questions**  
 If you have any questions or suggestions, feel free to open an issue or reach out! 🚀  
