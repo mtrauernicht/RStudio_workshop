@@ -1,35 +1,38 @@
 ---
-title: "Your Title Here"
+title: "RStudio workshop - Demo"
 author: 
-  - name: "Your Name Here"
-    email: "Your Email Here"
-    affiliation: "Your University/Institution Here"
-date: '`r format(Sys.time(), "%d/%m/%Y")`'
+  - name: "Max Trauernicht"
+    email: "m.trauernicht@nki.nl"
+    affiliation: "Netherlands Cancer Institute / University of Twente"
+date: '20/02/2025'
 output: 
   html_document:
-    theme: united
-    highlight: pygments
-    fig_caption: yes
-    code_folding: hide
-    df_print: kable
+    theme: flatly  # Modern, professional look
+    highlight: tango  # Clean code highlighting
+    fig_caption: true
+    code_folding: show  # Users can expand/collapse code
+    df_print: paged  # Paginate long tables instead of cluttering the page
     toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: false
----
+    toc_depth: 2  # Limits TOC depth for clarity
+    toc_float: 
+      collapsed: true  # Keeps TOC clean, expandable when needed
+      smooth_scroll: true  # Smooth scrolling when clicking TOC links
+    number_sections: true  # Automatically number sections
+    mathjax: "default"  # Enables LaTeX-style equations if needed
 
 ---
 
-### Workshop introduction
-In this document, we will load interview data and visualize it to gain insights into the data. We will also perform basic statistical tests to generate solid conclusions about the data.
+---
 
-The data can be found on: https://github.com/mtrauernicht/RStudio_workshop
-
-## Data information
-
-
+## **Description of the analysis**
+In this document, I will first load the demo interview data. Then, I will manipulate the data to get the data frame in the right format for plotting and statistical analysis. I will then visualize the data to gain insights. I will also perform basic statistical tests to generate solid conclusions about the data.
 
 ---
+
+
+
+
+
 
 ## Setup {.tabset}
 
@@ -51,83 +54,83 @@ div.sourceCode {
 }
 ```
 
-### Libraries
+---
+
+### Load libraries
 ```{r setup, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+# Set some global options
 knitr::opts_chunk$set(echo = TRUE)
 StartTime <-Sys.time()
-
-# 8-digit Date tag:
 Date <- substr(gsub("-","",Sys.time()),1,8) 
-# libraries:
-library(ggvisuals)
 
+
+# Load libraries (make sure to have them installed before using install.packages("package_name"))
+library(tidyverse)
+library(stats)
 ```
 
-### Custom functions
-
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
-SetFileName <- function(filename, initials) {
-  # Set filename with extension and initials to make filename with date integrated.
-  filename <- substitute(filename)
-  initials <- substitute(initials)
-  filename <- paste0(initials, Date, filename)
-  filename
-}
-
-theme_classic_lines <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top") +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_classic_lines_45 <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 45) +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_classic_lines_90 <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 90) +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_set(theme_classic_lines())
-```
-
+---
 
 ### Load data
 
-```{r}
-# Here I load this: 
+```{r load data, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+# Load pre-workshop data
+pre_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_pre_workshop_data.csv")
+### Alternative: download data and load using read_csv("cyber_security_pre_workshop.csv")
 
+# Load post-workshop data
+post_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_post_workshop_data.csv")
 
-
+### View data directly by Cmd + Click (Mac) or Ctrl + Click (Windows) on loaded object 
 ```
 
 ---
 
-## Visualisation
+### Data manipulation
 
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+```{r data_manipulation, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+# Select and rename relevant columns
+## print names(pre_workshop_data) in console to quickly see column names
+### First for the pre_workshop_data
+pre_workshop_data <- pre_workshop_data %>%
+  select(Gender, 
+         'College' = `Which technical college are you currently enrolled in?`,
+         Course,
+         'Awareness' = `How would you rate your current level of awareness and understanding of cybersecurity?`,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`)
 
-
-
+### Now also for the post_workshop_data
+post_workshop_data <- post_workshop_data %>%
+  select(Gender, College, Course,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`,
+         'Attendance' = `Did you attend the cybersecurity workshop?`,
+         'Effective' = `How effective do you think the workshop was in enhancing your understanding of cybersecurity?`,
+         'Confident' = `How confident are you in your ability to practice good cybersecurity measures after attending the workshop?`)
 ```
 
 ---
 
-## Results
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+## Data visualisation
+
+```{r data_visualization_1, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+# Gender distribution per college in the pre-workshop questionnaire
+ggplot(pre_workshop_data,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the pre-workshop questionnaire") +
+  theme_bw()
+
+# The same plot but in the post-workshop questionnaire
+ggplot(post_workshop_data,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the post-workshop questionnaire") +
+  theme_bw()
 ```
 
-
-### Exporting potential data
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
-```
+---
 
 
 # Session Info
