@@ -24,18 +24,18 @@ By the end of this session, you will be able to:
 
 ### **3️⃣ Exploring the tidyverse**  
 - Introduction to `dplyr` for data wrangling.  
-- Common functions: `filter()`, `select()`, `mutate()`, `group_by()`, `summarise()`.  
+- Common functions: `filter()`, `select()`, `mutate()`.  
 - Handling datasets efficiently.   
 
 ### **4️⃣ Data Visualization with ggplot2**  
 - Understanding the **grammar of graphics**.  
-- Creating basic plots: scatter plots, histograms, bar charts.  
+- Creating basic plots: histograms, bar charts.  
 - Customizing visualizations (titles, labels, themes).  
 
 ### **5️⃣ Statistical Analysis of Interview Data**  
 - Exploring interview dataset.  
 - Computing summary statistics.  
-- Performing simple hypothesis tests (e.g., `t.test()`). 
+- Performing simple hypothesis tests (e.g., `cor.test()`). 
 
 ## **💡 Questions**  
 If you have any questions or suggestions, feel free to reach out! 😊 
