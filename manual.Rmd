@@ -38,12 +38,11 @@ Download and install R first and then RStudio through the following link, if you
 
 ### **📂 Dataset & Materials**
 - Open RStudio, create a new folder (name it e.g., "RStudio_workshop")
-- Download the .Rmd files from the following link:
-  - **[demo_script](https://github.com/mtrauernicht/RStudio_workshop/blob/main/demo.Rmd)**
+- Download the .Rmd file from the GitHub or the following link:
   - **[exercise_script](https://github.com/mtrauernicht/RStudio_workshop/blob/main/exercises.Rmd)**
-- Place the downloaded files in the folder you created.
-- The .csv files can be either also downloaded from the repository, or loaded directly from GitHub into RStudio (see demo.Rmd for explanation)
-- If you have a GitHub account and git set up on your local device, you can instead of downloading the data also clone the repository to your local machine using the following commands:
+- Place the downloaded file in the folder you created.
+- The .csv files can be either also downloaded from the repository, or loaded directly from GitHub into RStudio (see exercises.Rmd for explanation)
+- Optional: If you have a GitHub account and git set up on your local device, you can instead of downloading also clone the repository to your local machine using the following commands:
 ```
 cd /path/to/your/folder
 git clone https://github.com/mtrauernicht/RStudio_workshop.git
@@ -54,7 +53,6 @@ git clone https://github.com/mtrauernicht/RStudio_workshop.git
 ## **Exercises**
 - open the exercises.Rmd file in RStudio
 - follow the instructions and complete the exercises
-- have a look at the demo.Rmd for examples
 
 ---
  

@@ -1,134 +1,168 @@
 ---
-title: "Your Title Here"
+title: "RStudio workshop - Exercises"
 author: 
-  - name: "Your Name Here"
-    email: "Your Email Here"
-    affiliation: "Your University/Institution Here"
-date: '`r format(Sys.time(), "%d/%m/%Y")`'
+  - name: "Max Trauernicht"
+    email: "m.trauernicht@nki.nl"
+    affiliation: "Netherlands Cancer Institute / University of Twente"
+date: '20/02/2025'
 output: 
   html_document:
-    theme: united
-    highlight: pygments
-    fig_caption: yes
-    code_folding: hide
-    df_print: kable
+    theme: flatly  # Modern, professional look
+    highlight: tango  # Clean code highlighting
+    fig_caption: true
+    code_folding: show  # Users can expand/collapse code
+    df_print: paged  # Paginate long tables instead of cluttering the page
     toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: false
----
+    toc_depth: 2  # Limits TOC depth for clarity
+    toc_float: 
+      collapsed: true  # Keeps TOC clean, expandable when needed
+      smooth_scroll: true  # Smooth scrolling when clicking TOC links
+    number_sections: true  # Automatically number sections
+    mathjax: "default"  # Enables LaTeX-style equations if needed
 
 ---
 
-### Workshop introduction
-In this document, we will load interview data and visualize it to gain insights into the data. We will also perform basic statistical tests to generate solid conclusions about the data.
+---
 
-The data can be found on: https://github.com/mtrauernicht/RStudio_workshop
-
-## Data information
-
-
+# **Description of the interview data**
+The data collection process consisted of two phases: a pre-workshop phase, conducted before the workshop, and a post-workshop phase, conducted afterward. These phases were designed to assess participants' understanding and awareness of cybersecurity both before and after attending the workshop. The available datasets contain responses from questionnaires evaluating students' cybersecurity awareness at these two time points.
 
 ---
 
-## Setup {.tabset}
+# **Description of the analysis**
+In this document, we will first load the interview data sets. Then, we will manipulate the data to get the data frame in the right format for plotting and statistical analysis. We will then visualize the data to gain insights. We will also perform basic statistical tests to generate solid conclusions about the data.
 
-<!-- little HTML script to do indentation of the table of contents -->
-<script>
-    $(document).ready(function() {
-      $items = $('div#TOC li');
-      $items.each(function(idx) {
-        num_ul = $(this).parentsUntil('#TOC').length;
-        $(this).css({'text-indent': num_ul * 10, 'padding-left': 0});
-      });
+---
 
-    });
-</script>
+# **Setup**
 
-```{css, echo = FALSE}
-div.sourceCode {
-  overflow-x: hidden;
-}
-```
+---
 
-### Libraries
-```{r setup, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+## Load libraries
+```{r setup, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Set some global options
 knitr::opts_chunk$set(echo = TRUE)
 StartTime <-Sys.time()
-
-# 8-digit Date tag:
 Date <- substr(gsub("-","",Sys.time()),1,8) 
-# libraries:
-library(ggvisuals)
-
-```
-
-### Custom functions
-
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
-SetFileName <- function(filename, initials) {
-  # Set filename with extension and initials to make filename with date integrated.
-  filename <- substitute(filename)
-  initials <- substitute(initials)
-  filename <- paste0(initials, Date, filename)
-  filename
-}
-
-theme_classic_lines <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top") +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_classic_lines_45 <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 45) +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_classic_lines_90 <- function() {
-  theme_pubr(border = T, base_family = "Arial", legend = "top", x.text.angle = 90) +
-            theme(panel.grid.major = element_line(colour = "#adb5bd", size = 0.1),
-                  strip.background = element_rect(fill = "#ced4da")
-            )
-}
-
-theme_set(theme_classic_lines())
-```
 
 
-### Load data
-
-```{r}
-# Here I load this: 
-
-
-
+# Load libraries (make sure to have them installed before using install.packages("package_name"))
+library(tidyverse)
+library(stats)
 ```
 
 ---
 
-## Visualisation
+## Load data
 
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+```{r load data, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Load pre-workshop data
+pre_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_pre_workshop_data.csv")
+### Alternative: download data and load using read_csv("cyber_security_pre_workshop.csv")
 
+# Load post-workshop data
+post_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_post_workshop_data.csv")
 
-
+### View data directly by Cmd + Click (Mac) or Ctrl + Click (Windows) on loaded object 
 ```
 
 ---
 
-## Results
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+## Data manipulation
+
+```{r data_manipulation, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Select and rename relevant columns
+## print names(pre_workshop_data) in console to quickly see column names
+### First for the pre_workshop_data
+pre_workshop_data_filt <- pre_workshop_data %>%
+  select(Gender, 
+         'College' = `Which technical college are you currently enrolled in?`,
+         Course,
+         'Awareness' = `How would you rate your current level of awareness and understanding of cybersecurity?`,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`)
+
+### Now also for the post_workshop_data
+post_workshop_data_filt <- post_workshop_data %>%
+  select(Gender, College, Course,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`,
+         'Attendance' = `Did you attend the cybersecurity workshop?`,
+         'Effective' = `How effective do you think the workshop was in enhancing your understanding of cybersecurity?`,
+         'Confident' = `How confident are you in your ability to practice good cybersecurity measures after attending the workshop?`)
 ```
 
+---
 
-### Exporting potential data
-```{r, out.width= "80%", fig.align= "center", echo=FALSE, warning= FALSE, message=FALSE}
+# Data visualisation
+
+## Gender distribution per college
+Aim: Visualize the gender distribution per college in the pre- and post-workshop questionnaires.
+```{r data_visualization_1, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Gender distribution per college in the pre-workshop questionnaire
+ggplot(pre_workshop_data_filt,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the pre-workshop questionnaire") +
+  theme_bw()
+
+# The same plot but in the post-workshop questionnaire
+ggplot(post_workshop_data_filt,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the post-workshop questionnaire") +
+  theme_bw()
 ```
+Conclusion: More male students participated at the GCIT college.
 
+---
+
+## Gender distribution per course
+Exercise: Visualize the gender distribution per course at JNEC in the pre-workshop questionnaire.
+```{r data_visualization_2, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+
+```
+Conclusion: 
+
+---
+
+## Importance of cyber security pre- and post-workshop
+Exercise: Visualize the importance rating of cyber security per college. Make two separate plots for the pre- and post-workshop questionnaires.
+```{r data_visualization_3, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+
+```
+Conclusion: 
+
+---
+
+# Statistical Analyses
+
+## Does awareness rating correlate with importance rating?
+Exercise: Perform a correlation test between awareness and importance scores in the pre-workshop questionnaire.
+```{r data_analysis_1, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+
+```
+Conclusion: 
+
+---
+
+## Do females and males differ in their importance ratings?
+Exercise: Perform a statistical test to compare importance scores between female and male in the pre-workshop questionnaire. Visualize the importance ratings per Gender to understand your results. 
+```{r data_analysis_2, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+
+```
+Conclusion:
+
+---
+
+## Does the importance ranking increase after the workshop?
+Exercise: Compare the importance scores before and after the workshop using a statistical test. 
+```{r data_analysis_3, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+
+```
+Conclusion:
+
+Knit your document and save it as an HTML file!
 
 # Session Info
 ```{r}
