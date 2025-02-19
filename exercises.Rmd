@@ -162,6 +162,9 @@ Exercise: Compare the importance scores before and after the workshop using a st
 ```
 Conclusion:
 
+
+Feel free to do any additional analyses or to fine-tune your plots!
+
 Knit your document and save it as an HTML file!
 
 # Session Info
