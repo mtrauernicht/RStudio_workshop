@@ -1,0 +1,206 @@
+---
+title: "RStudio workshop - Exercises"
+author: 
+  - name: "Max Trauernicht"
+    email: "m.trauernicht@nki.nl"
+    affiliation: "Netherlands Cancer Institute / University of Twente"
+date: '20/02/2025'
+output: 
+  html_document:
+    theme: flatly  # Modern, professional look
+    highlight: tango  # Clean code highlighting
+    fig_caption: true
+    code_folding: show  # Users can expand/collapse code
+    df_print: paged  # Paginate long tables instead of cluttering the page
+    toc: true
+    toc_depth: 2  # Limits TOC depth for clarity
+    toc_float: 
+      collapsed: true  # Keeps TOC clean, expandable when needed
+      smooth_scroll: true  # Smooth scrolling when clicking TOC links
+    number_sections: true  # Automatically number sections
+    mathjax: "default"  # Enables LaTeX-style equations if needed
+
+---
+
+---
+
+# **Description of the interview data**
+The data collection process consisted of two phases: a pre-workshop phase, conducted before the workshop, and a post-workshop phase, conducted afterward. These phases were designed to assess participants' understanding and awareness of cybersecurity both before and after attending the workshop. The available datasets contain responses from questionnaires evaluating students' cybersecurity awareness at these two time points.
+
+---
+
+# **Description of the analysis**
+In this document, we will first load the interview data sets. Then, we will manipulate the data to get the data frame in the right format for plotting and statistical analysis. We will then visualize the data to gain insights. We will also perform basic statistical tests to generate solid conclusions about the data.
+
+---
+
+# **Setup**
+
+---
+
+## Load libraries
+```{r setup, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Set some global options
+knitr::opts_chunk$set(echo = TRUE)
+StartTime <-Sys.time()
+Date <- substr(gsub("-","",Sys.time()),1,8) 
+
+
+# Load libraries (make sure to have them installed before using install.packages("package_name"))
+library(tidyverse)
+library(stats)
+```
+
+---
+
+## Load data
+
+```{r load data, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Load pre-workshop data
+pre_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_pre_workshop_data.csv")
+### Alternative: download data and load using read_csv("cyber_security_pre_workshop.csv")
+
+# Load post-workshop data
+post_workshop_data <- read_csv("https://raw.githubusercontent.com/mtrauernicht/RStudio_workshop/main/cyber_security_post_workshop_data.csv")
+
+### View data directly by Cmd + Click (Mac) or Ctrl + Click (Windows) on loaded object 
+```
+
+---
+
+## Data manipulation
+
+```{r data_manipulation, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Select and rename relevant columns
+## print names(pre_workshop_data) in console to quickly see column names
+### First for the pre_workshop_data
+pre_workshop_data_filt <- pre_workshop_data %>%
+  select(Gender, 
+         'College' = `Which technical college are you currently enrolled in?`,
+         Course,
+         'Awareness' = `How would you rate your current level of awareness and understanding of cybersecurity?`,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`)
+
+### Now also for the post_workshop_data
+post_workshop_data_filt <- post_workshop_data %>%
+  select(Gender, College, Course,
+         'Importance' = `How important do you think cybersecurity is in today's digital age?`,
+         'Attendance' = `Did you attend the cybersecurity workshop?`,
+         'Effective' = `How effective do you think the workshop was in enhancing your understanding of cybersecurity?`,
+         'Confident' = `How confident are you in your ability to practice good cybersecurity measures after attending the workshop?`)
+```
+
+---
+
+# Data visualisation
+
+## Gender distribution per college
+Aim: Visualize the gender distribution per college in the pre- and post-workshop questionnaires.
+```{r data_visualization_1, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Gender distribution per college in the pre-workshop questionnaire
+ggplot(pre_workshop_data_filt,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the pre-workshop questionnaire") +
+  theme_bw()
+
+# The same plot but in the post-workshop questionnaire
+ggplot(post_workshop_data_filt,
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~College) +
+  labs(title = "Gender distribution per college in the post-workshop questionnaire") +
+  theme_bw()
+```
+Conclusion: More male students participated at the GCIT college.
+
+---
+
+## Gender distribution per course
+Exercise: Visualize the gender distribution per course at JNEC in the pre-workshop questionnaire.
+```{r data_visualization_2, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Gender distribution per course at JNEC in the pre-workshop questionnaire
+## Tip: use the filter function from dplyr
+ggplot(pre_workshop_data_filt %>% 
+         filter(College == "JNEC"),
+       aes(x = Gender)) +
+  geom_bar() +
+  facet_wrap(~Course) +
+  labs(title = "Gender distribution per course at JNEC in the pre-workshop questionnaire") +
+  theme_bw()
+```
+Conclusion: At JNEC, mostly female students participated from Diploma in Construction Supervision.
+
+---
+
+## Importance of cyber security pre- and post-workshop
+Exercise: Visualize the importance rating of cyber security per college. Make two separate plots for the pre- and post-workshop questionnaires.
+```{r data_visualization_3, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Gender distribution per course at JNEC in the pre-workshop questionnaire
+ggplot(pre_workshop_data_filt,
+       aes(x = Importance)) +
+  geom_bar() +
+  labs(title = "Importance rating of cybersecurity in the pre-workshop questionnaire") +
+  theme_bw() +
+  facet_wrap(~College)
+
+# Gender distribution per course at JNEC in the post-workshop questionnaire
+ggplot(post_workshop_data_filt,
+       aes(x = Importance)) +
+  geom_bar() +
+  labs(title = "Importance rating of cybersecurity in the post-workshop questionnaire") +
+  theme_bw() +
+  facet_wrap(~College)
+```
+Conclusion: At all colleges, the importance ranking increased after the workshop.
+
+---
+
+# Statistical Analyses
+
+## Does awareness rating correlate with importance rating?
+Exercise: Perform a correlation test between awareness and importance scores in the pre-workshop questionnaire.
+```{r data_analysis_1, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Correlation test between awareness and importance ratings in the pre-workshop questionnaire
+cor.test(pre_workshop_data_filt$Awareness, pre_workshop_data_filt$Importance, method = "spearman")
+```
+Conclusion: There is no correlation between pre-workshop awareness and importance ratings.
+
+---
+
+## Do females and males differ in their importance ratings?
+Exercise: Perform a statistical test to compare importance scores between female and male in the pre-workshop questionnaire. Visualize the importance ratings per Gender to understand your results. 
+```{r data_analysis_2, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Plot importance ratings by Gender
+ggplot(pre_workshop_data_filt,
+       aes(x = Importance)) +
+  geom_bar() +
+  labs(title = "Importance rating of cybersecurity by Gender in the pre-workshop questionnaire") +
+  theme_bw() +
+  facet_wrap(~Gender)
+
+# Mann-Whitney U test to compare importance
+wilcox.test(pre_workshop_data_filt$Importance ~ pre_workshop_data_filt$Gender)
+```
+Conclusion: There is no significant difference in importance ratings between male and female.
+
+---
+
+## Does the importance ranking increase after the workshop?
+Exercise: Compare the importance scores before and after the workshop using a statistical test. 
+```{r data_analysis_3, out.width= "80%", fig.align= "center", warning= FALSE, message=FALSE}
+# Wilcoxon signed-rank test to compare importance ratings before and after the workshop
+wilcox.test(post_workshop_data_filt$Importance, pre_workshop_data_filt$Importance, alternative = "greater")
+```
+Conclusion: Importance ratings significantly increased after the workshop.
+
+
+# Session Info
+```{r}
+paste("Run time: ",format(Sys.time()-StartTime))
+getwd()
+date()
+sessionInfo()
+```
+
